@@ -32,7 +32,7 @@ jobs:
         echo ${{ env.PLATFORM }}
         echo ${{ env.REGISTRY }}
         echo ${{ env.IMAGE }}
-        echo ${{ env.DOCKER_CREDS }}
+        echo ${{ secrets.DOCKERIO }}
         docker buildx create --use
         docker buildx inspect --bootstrap
         docker buildx build \
