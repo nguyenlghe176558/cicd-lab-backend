@@ -39,6 +39,6 @@ jobs:
           --platform ${{ env.PLATFORM }} \
           -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest \
           -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.sha }} \
-          --build-arg REGISTRY_TOKEN=${{ env.DOCKER_CREDS }} \
+          --build-arg REGISTRY_TOKEN=${{ secrets.DOCKERIO }} \
           -f Dockerfile . \
           --push
