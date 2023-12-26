@@ -29,6 +29,10 @@ jobs:
     - 
       name: Build Docker image and push to Docker Hub
       run: |
+        echo ${{ env.PLATFORM }}
+        echo ${{ env.REGISTRY }}
+        echo ${{ env.IMAGE }}
+        echo ${{ env.DOCKER_CREDS }}
         docker buildx create --use
         docker buildx inspect --bootstrap
         docker buildx build \
