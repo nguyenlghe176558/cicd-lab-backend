@@ -14,6 +14,7 @@ jobs:
       REGISTRY: lnguyennb
       IMAGE: cicd-lab-backend
       PLATFORM: "linux/amd64,linux/arm64/v8"
+      DOCKER_CREDS: ${{ secrets.DOCKER_HUB_CREDENTIALS }}
 
     steps:
     - 
@@ -30,11 +31,10 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx inspect --bootstrap
-          cat ${{ secrets.DOCKER_HUB_CREDENTIALS }}
           docker buildx build \
             --platform ${{ env.PLATFORM }} \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.sha }} \
-            --build-arg REGISTRY_TOKEN=${{ secrets.DOCKER_HUB_CREDENTIALS }} \
+            --build-arg REGISTRY_TOKEN=${{ env.DOCKER_CREDS }} \
             -f Dockerfile . \
             --push
