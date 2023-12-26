@@ -31,11 +31,11 @@ jobs:
       run: |
         docker buildx create --use
         docker buildx inspect --bootstrap
-        cat ${{ env.PLATFORM }}
-        cat ${{ env.REGISTRY }}
-        cat ${{ env.IMAGE }}t
-        cat ${{ github.sha }}
-        cat ${{ env.DOCKER_CREDS }}
+        echo ${{ env.PLATFORM }}
+        echo ${{ env.REGISTRY }}
+        echo ${{ env.IMAGE }}t
+        echo ${{ github.sha }}
+        echo ${{ env.DOCKER_CREDS }}
         docker buildx build \
           --platform ${{ env.PLATFORM }} \
           -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest \
