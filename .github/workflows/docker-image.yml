@@ -14,7 +14,7 @@ jobs:
       REGISTRY: lnguyennb
       IMAGE: cicd-lab-backend
       PLATFORM: "linux/amd64,linux/arm64/v8"
-      DOCKER_CREDS: ${{ secrets.DOCKERIO }}
+      DOCKER_CREDS: "dckr_pat_aBO82R91ETHB6IUvcEe0DEzpLiw"
 
     steps:
     - 
@@ -29,16 +29,12 @@ jobs:
     - 
       name: Build Docker image and push to Docker Hub
       run: |
-        echo ${{ env.PLATFORM }}
-        echo ${{ env.REGISTRY }}
-        echo ${{ env.IMAGE }}
-        echo ${{ secrets.DOCKERIO }}
         docker buildx create --use
         docker buildx inspect --bootstrap
         docker buildx build \
           --platform ${{ env.PLATFORM }} \
           -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest \
           -t ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.sha }} \
-          --build-arg REGISTRY_TOKEN="${{ secrets.DOCKERIO }}" \
+          --build-arg REGISTRY_TOKEN="${{ env.DOCKER_CREDS }}" \
           -f Dockerfile . \
           --push
