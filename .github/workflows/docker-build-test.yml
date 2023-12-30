@@ -7,16 +7,12 @@ on:
       - '!main'
 
 jobs:
-
   build-test:
-
     runs-on: ubuntu-latest
-
     env:
       REGISTRY: lnguyennb
       IMAGE: cicd-lab-backend
       PLATFORMS: "linux/amd64,linux/arm64"
-
     steps:
     - 
       name: Checkout
@@ -25,14 +21,19 @@ jobs:
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     - 
+      name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_CREDENTIALS }}
+    - 
       name: Build tag ${{ github.sha }}
       uses: docker/build-push-action@v5
       with:
         context: .
         platforms: ${{ env.PLATFORMS }}
-        push: false
+        push: true
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.sha }}
-
     - 
         name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -40,7 +41,6 @@ jobs:
           image-ref: 'docker.io/${{ env.REGISTRY }}/${{ env.IMAGE }}:${{ github.sha }}'
           format: 'sarif'
           output: 'trivy-results.sarif'
-
     -   
         name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
