@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD [ "node", "tasks-app.js" ]
+CMD [ "node --require dd-trace/init", "tasks-app.js" ]
